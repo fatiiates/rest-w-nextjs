@@ -21,10 +21,9 @@ export default function MyApp(props: AppProps) {
       <Head>
         <title>Dershane Sistem</title>
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-        <meta name="author" content="Fatih ATES, Mehmetcan DALMAZGIL, Erdogan TURPCU" />
+        <meta name="author" content="Bursa Teknik Universitesi" />
       </Head>
       <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Component {...pageProps} />
       </ThemeProvider>
