@@ -18,7 +18,7 @@ const Register = async (req, res) => {
             if (err)
                 reject(err);
             else {
-                const vars = JSON.stringify(Object.assign({}, result));
+                var vars = JSON.stringify(Object.assign({}, result));
                 resolve(vars);
             }
         });
@@ -55,7 +55,7 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
         await Register(req, res)
             .then((result: object) => {
                 const send = createSuccessResponse();
-                send.result = result;
+                send.result = result;               
                 return res.status(200).send(send);
             })
             .catch(err => {
@@ -64,7 +64,6 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
                 send.description = err.message;
                 return res.status(send.err_code).send(send);
             });
-
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

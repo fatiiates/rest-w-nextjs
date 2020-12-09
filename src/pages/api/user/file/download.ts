@@ -6,7 +6,7 @@ import { createErrorResponse } from "../../../../assets/types/generators/Respons
 const FileDownload = (req, res, cb: (err, result?) => void): any => {
 
     const data: { targetFile: string } = req.body.data;
-    const directoryPath = "../../../../files/uploads/" + data.targetFile;
+    const directoryPath = "./src/assets/files/uploads/" + data.targetFile;
     if (directoryPath == "Undefined")
         cb(Error("Üzgünüm, indirilebilecek bir dosya mevcut değil."), null);
     else {

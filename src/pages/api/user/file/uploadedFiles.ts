@@ -29,7 +29,7 @@ const existDirectory: any = async (user_id, uploadDir: string, cb?: (err: Error,
 
 const getUploadedFiles = async (req, res) => {
   return new Promise(async function (resolve, reject) {
-    await existDirectory(req.body.data.id, "./src", function (err: Error, result: string) {
+    await existDirectory(req.body.data.id, "./src/assets", function (err: Error, result: string) {
       if (err)
         reject(err);
       else {

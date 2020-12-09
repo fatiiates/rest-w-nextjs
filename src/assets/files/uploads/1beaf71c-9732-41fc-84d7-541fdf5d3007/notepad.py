@@ -178,9 +178,10 @@ class MainWindow(QMainWindow):
                 elif dialog_result != QMessageBox.No:
                     raise Exception("İndirme işlemi iptal edildi.")
                 myobj = { 'data': { 'id': self.SW.user_id }}
-                res = requests.post("http://localhost:8080/uploadedFiles", json = myobj)
+                res = requests.post("http://localhost:3000/api/user/file/uploadedFiles", json = myobj)
                 res_json = json.loads(res.text)
-                if res.status_code != 200:
+                print(res.text)
+                if res_json['ok'] != "true":
                     raise Exception(res_json["message"])
 
                 dialog = FilesWindow("Dosyalar", res_json)
@@ -256,8 +257,8 @@ class MainWindow(QMainWindow):
             mesajKutusu.exec()
         else:
             self.file_save()
-            server_update_url = 'http://localhost:8080/upload'
-            database_url = 'http://localhost:8080/logger'
+            server_update_url = 'http://localhost:3000/api/user/file/upload'
+            database_url = 'http://localhost:3000/api/user/logger'
             text = self.editor.toPlainText()
             user_id = self.SW.user_id
             if(len(text) != 0):
@@ -266,8 +267,9 @@ class MainWindow(QMainWindow):
                     myobj={'id': self.SW.user_id }
                     print(myobj)
                     x = requests.post(server_update_url, files = file_dict, params = myobj)
-                    a = json.loads(x.text)
-                    if(x.status_code == 200):
+                    res_json = json.loads(x.text)
+                    print(res_json)
+                    if(res_json['ok'] == True):
                         tail = os.path.split(self.path)
                         myobj = { 'data': {}}
                         myobj['data']['id'] = user_id
@@ -275,8 +277,8 @@ class MainWindow(QMainWindow):
                         myobj['data']['files_name'] = tail[-1]
                         myobj['data']['files_description'] = "Success"
                         t = requests.post(database_url, json = myobj)
-                        b = json.loads(x.text)
-                        if(t.status_code == 200):
+                        logger_res_json = json.loads(x.text)
+                        if(logger_res_json['ok'] == True):
                             mesajKutusu = QMessageBox()
                             mesajKutusu.setWindowTitle("Başarılı!")
                             mesajKutusu.setText("Dosya sunucuya yüklendi")
@@ -286,7 +288,7 @@ class MainWindow(QMainWindow):
                         else:
                             mesajKutusu = QMessageBox()
                             mesajKutusu.setWindowTitle("Hata!")
-                            mesajKutusu.setText(b["message"])
+                            mesajKutusu.setText(logger_res_json["description"])
                             mesajKutusu.setIcon(QMessageBox.Warning)
                             mesajKutusu.setStandardButtons(QMessageBox.Ok)
                             mesajKutusu.exec()
@@ -330,6 +332,7 @@ class MainWindow(QMainWindow):
             self.SW = Login()
             if self.SW.exec_():
                 self.isim.setText("Hoşgeldin " + self.SW.kullanici)
+                print(self.SW.kullanici)
                 self.isim.adjustSize()
 
     def log_out(self):
@@ -343,7 +346,7 @@ class MainWindow(QMainWindow):
             mesajKutusu.exec()
         else:
             user_id = self.SW.user_id
-            logout_url = 'http://localhost:8080/logout'
+            logout_url = 'http://localhost:3000/api/user/logout'
             myobj = '{"data":'+'{"user_id": '+f'"{user_id}"'+'} }'
             x = requests.post(logout_url, data = myobj)
             #print(x.text)
@@ -436,19 +439,20 @@ class Register(QtWidgets.QDialog):
         reg_isim = str(self.input_isim.text())
         reg_email = str(self.input_email.text())
         reg_sifre = str(self.input_sifre.text())
-        register_url = 'http://localhost:8080/register'
+        register_url = 'http://localhost:3000/api/user/register'
         if(len(reg_isim and reg_email and reg_sifre) != 0):
             myobj = { 'data': {}}
             myobj['data']['user_fullname'] = reg_isim
             myobj['data']['email'] = reg_email
             myobj['data']['password'] = reg_sifre
             x = requests.post(register_url, json = myobj)
-            a = json.loads(x.text)
-            print(x.status_code);
-        if x.status_code == 200:
+            res_json = json.loads(x.text)       
+            
+        if res_json['ok'] == True:
+            result = json.loads(res_json['result'])
             mesajKutusu = QMessageBox()
             mesajKutusu.setWindowTitle("Tebrikler!")
-            mesajKutusu.setText(a["message"])
+            mesajKutusu.setText("Başarıyla kayıt oldunuz.")
             mesajKutusu.setInformativeText("Lütfen bilgilerinizle giriş yapınız")
             mesajKutusu.setIcon(QMessageBox.Information)
             mesajKutusu.setStandardButtons(QMessageBox.Ok)
@@ -456,7 +460,7 @@ class Register(QtWidgets.QDialog):
         else:
             mesajKutusu = QMessageBox()
             mesajKutusu.setWindowTitle("Hata!")
-            mesajKutusu.setText(a["message"])
+            mesajKutusu.setText(res_json['description']["message"])
             mesajKutusu.setIcon(QMessageBox.Information)
             mesajKutusu.setStandardButtons(QMessageBox.Ok)
             mesajKutusu.exec()
@@ -490,28 +494,29 @@ class Login(QtWidgets.QDialog):
         self.button.clicked.connect(self.login)
 
     def login(self):
-        try:
-            log_email = str(self.input_email.text())
-            log_sifre = str(self.input_sifre.text())
-            login_url = 'http://localhost:8080/login'
-            if(len(log_email and log_sifre) != 0):
-                myobj = { 'data': {}}
-                myobj['data']['email'] = log_email
-                myobj['data']['password'] = log_sifre
-                x = requests.post(login_url, json=myobj)
-                a = json.loads(x.text)
-                self.user_id = a['0']['id']
-                self.kullanici = a['0']['user_fullname']
-                self.user_email = log_email
-                self.accept()
-        except:
+        #try:
+        log_email = str(self.input_email.text())
+        log_sifre = str(self.input_sifre.text())
+        login_url = 'http://localhost:3000/api/user/login'
+        if(len(log_email and log_sifre) != 0):
+            myobj = { 'data': {}}
+            myobj['data']['email'] = log_email
+            myobj['data']['password'] = log_sifre
+            x = requests.post(login_url, json=myobj)
+            res_json = json.loads(x.text)
+            a = json.loads(res_json['result'])
+            self.user_id = a['0']['id']
+            self.kullanici = a['0']['user_fullname']
+            self.user_email = log_email
+            self.accept()
+        """except:
             mesajKutusu = QMessageBox()
             mesajKutusu.setWindowTitle("Hata!")
             mesajKutusu.setText("Kullanıcı Bulunamadı")
             mesajKutusu.setInformativeText("Lütfen bilgilerinizi kontrol ediniz.")
             mesajKutusu.setIcon(QMessageBox.Warning)
             mesajKutusu.setStandardButtons(QMessageBox.Ok)
-            mesajKutusu.exec()
+            mesajKutusu.exec()"""
 
 class FilesWindow(QDialog):
     def __init__(self,name, res_json = None):
@@ -546,7 +551,7 @@ class FilesWindow(QDialog):
         filename = self.list.item(row).text()
         targetFile = self.directoryName + '/' + filename
         myobj = { 'data': { 'targetFile': targetFile }}
-        res = requests.post("http://localhost:8080/download", json = myobj)
+        res = requests.post("http://localhost:3000/api/user/file/download", json = myobj)
         print(res.text)
         content_disposition = res.headers.get("Content-Disposition").split(";")
         if(len(content_disposition) > 2):

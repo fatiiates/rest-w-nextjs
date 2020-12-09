@@ -40,11 +40,11 @@ const FileUploadMiddleware = async (req, directoryPath: string, cb: (err, result
 	form.parse(req, function (err, fields, files) {
 		if (err)
 			cb(err, null);
-		else
+		/*else
 			cb(null, {
 				message: "Dosya yükleme başarılı.",
-				filename: files.file.name
-			});
+				filename: files
+			});*/
 
 	});
 

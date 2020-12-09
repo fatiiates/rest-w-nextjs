@@ -16,7 +16,7 @@ const Login = async (req, res) => {
         await query(querySelect, [data.email, md5(data.password)], function (err, result) {
             if (err)
                 reject(err);
-            else if (result.lenth > 0) {
+            else if (result.length > 0) {
                 const vars = JSON.stringify(Object.assign({}, result));
                 resolve(vars);
             }
