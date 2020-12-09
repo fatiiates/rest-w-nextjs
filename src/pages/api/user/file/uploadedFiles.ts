@@ -1,16 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import fs from 'fs';
 
-import query from '../../../../db';
+import db from '../../../../db';
 import { createErrorResponse, createSuccessResponse } from "../../../../assets/types/generators/Response";
 
 const existDirectory: any = async (user_id, uploadDir: string, cb?: (err: Error, result: string) => void) => {
   const querySelect: any = `SELECT * FROM users WHERE id = ? LIMIT 1`;
   try {
-    await query(querySelect, [user_id], function (err, result) {
-      if (err)
-        cb(err, null);
-      else {
+    await db.query(querySelect, [user_id])
+      .then((result: Array<any>) => {
         if (result.length > 0) {
           let directory_id: string = result[0]['directory_id'];
           const directoryPath = uploadDir + "/files/uploads/" + directory_id;
@@ -20,8 +18,11 @@ const existDirectory: any = async (user_id, uploadDir: string, cb?: (err: Error,
         }
         else
           return cb(Error("Veritabanında ilgili kullanıcı mevcut değil."), null);
-      }
+      })
+    .catch(err => {
+      cb(err, null);
     });
+    
   } catch (error) {
     return cb(Error("Bilinmeyen bir sorun oluştu."), null);
   }

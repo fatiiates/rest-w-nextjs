@@ -1,32 +1,38 @@
 import mysql from 'mysql';
 
 const config = {
-  host: "localhost",
-  database: "restfulapi",
-  user: "root",
-  password: "Root_123"
+    host: "localhost",
+    database: "restfulapi",
+    user: "root",
+    password: "Root_123"
 };
 
-const db = mysql.createConnection(config);  
-
-const query = async (query: string, values: Array<any>, cb: (err: Error, result?: any) => void) => {
-  try {
-    await db.query(query, values, function (err, result) {
-			if (err) {
-				if (err.code == "ECONNREFUSED")
-					return cb(Error("Veritabanına bağlanılamıyor."), null);
-				else
-					return cb(Error("Bilinmeyen bir sorun oluştu."), null);
-			}
-      else
-        return cb(null, result);			
-		});
-  } catch (error) {
-    return { error }
-  }
+class Database {
+    conn: any;
+    constructor(config) {
+        this.conn = mysql.createConnection(config);
+    }
+    public query = (sql, args) => {
+        return new Promise((resolve, reject) => {
+            this.conn.query(sql, args, (err, rows) => {
+                if (err)
+                    return reject(err);
+                resolve(rows);
+            });
+        });
+    };
+    public close() {
+        return new Promise((resolve, reject) => {
+            this.conn.end(err => {
+                if (err)
+                    return reject(err);
+                resolve();
+            });
+        });
+    };
 }
 
-export default query;
+export default new Database(config);
 
 
 

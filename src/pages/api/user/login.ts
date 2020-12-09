@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import query from '../../../db';
+import db from '../../../db';
 import md5 from 'md5';
 import { createErrorResponse, createSuccessResponse } from '../../../assets/types/generators/Response';
 
@@ -13,17 +13,18 @@ const Login = async (req, res) => {
         } = req.body.data;
 
         const querySelect: any = `SELECT * FROM users WHERE email = ? AND password = ? LIMIT 1`;
-        await query(querySelect, [data.email, md5(data.password)], function (err, result) {
-            if (err)
+        await db.query(querySelect, [data.email, md5(data.password)])
+            .then((result: Array<any>) => {
+                if (result.length > 0) {
+                    const vars = JSON.stringify(Object.assign({}, result));
+                    resolve(vars);
+                }
+                else
+                    reject(Error("Kullanıcı girişi yapılamıyor."));
+            })
+            .catch(err => {
                 reject(err);
-            else if (result.length > 0) {
-                const vars = JSON.stringify(Object.assign({}, result));
-                resolve(vars);
-            }
-            else
-                reject(Error("Kullanıcı girişi yapılamıyor."));
-
-        });
+            });
     });
 }
 

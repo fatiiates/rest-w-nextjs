@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import query from '../../../db';
+import db from '../../../db';
 import md5 from 'md5';
 import { v4 as uuidv4 } from 'uuid';
 import { createErrorResponse, createSuccessResponse } from '../../../assets/types/generators/Response';
@@ -14,13 +14,13 @@ const Register = async (req, res) => {
         } = req.body.data;
 
         const queryInsert: any = `INSERT INTO users (directory_id,user_fullname,email,password) values (?, ?, ?, ?)`;
-        await query(queryInsert, [uuidv4(), data.user_fullname, data.email, md5(data.password)], function (err, result) {
-            if (err)
-                reject(err);
-            else {
+        await db.query(queryInsert, [uuidv4(), data.user_fullname, data.email, md5(data.password)])
+            .then(result => {
                 var vars = JSON.stringify(Object.assign({}, result));
                 resolve(vars);
-            }
+            })
+        .catch(err => {
+            reject(err);
         });
     });
 }
@@ -58,12 +58,12 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
                 send.result = result;               
                 return res.status(200).send(send);
             })
-            .catch(err => {
-                const send = createErrorResponse();
-                send.err_code = 500;
-                send.description = err.message;
-                return res.status(send.err_code).send(send);
-            });
+        .catch(err => {
+            const send = createErrorResponse();
+            send.err_code = 500;
+            send.description = err.message;
+            return res.status(send.err_code).send(send);
+        });
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {

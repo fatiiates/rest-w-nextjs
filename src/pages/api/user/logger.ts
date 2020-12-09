@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createErrorResponse, createSuccessResponse } from '../../../assets/types/generators/Response';
-import query from '../../../db';
+import db from '../../../db';
 
 const Logger = async (req, res) => {
     return new Promise(async function (resolve, reject) {
@@ -14,12 +14,12 @@ const Logger = async (req, res) => {
         } = req.body.data;
 
         const querySelect: any = `INSERT INTO filesdata (user_id,filess,files_name,files_description) VALUES (?, ?, ?, ?)`;
-        await query(querySelect, [data.id, data.filess, data.files_name, data.files_description], function (err) {
-            if (err)
-                reject(err);
-            else
+        await db.query(querySelect, [data.id, data.filess, data.files_name, data.files_description])
+            .then(result => {
                 resolve({ message: "Dosya kaydı veritabanına işlendi." });
-        });
+            }).catch(err => {
+                reject(err);
+            });
     });
 }
 
