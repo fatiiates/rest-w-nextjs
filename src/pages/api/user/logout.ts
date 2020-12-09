@@ -6,9 +6,7 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const logout = async (req, res) => {
-
     res.status(200).send({ exit: "success" });
-
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
