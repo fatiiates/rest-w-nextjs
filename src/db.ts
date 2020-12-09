@@ -9,7 +9,7 @@ const config = {
 
 const db = mysql.createConnection(config);  
 
-const query = async (query: string, values: string, cb: (err: Error, result?: any) => void) => {
+const query = async (query: string, values: Array<any>, cb: (err: Error, result?: any) => void) => {
   try {
     await db.query(query, values, function (err, result) {
 			if (err) {
