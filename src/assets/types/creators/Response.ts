@@ -1,13 +1,13 @@
-import { ISuccessResponse, IErrorResponse } from "../Response";
+import { ISuccessResponse, IErrorResponse } from "@assets/types/Response";
 
-export const createSuccessResponse = (): ISuccessResponse => {
+export const createSuccessResponse = (result: object = {}): ISuccessResponse => {
     return {
         ok: true,
-        result: {}
+        result: result
     };
 };
 
-export const createErrorResponse = (err_code = 0, description = ""): IErrorResponse => {
+export const createErrorResponse = (err_code: number = 0, description: string = ""): IErrorResponse => {
     return {
         ok: false,
         err_code: err_code,

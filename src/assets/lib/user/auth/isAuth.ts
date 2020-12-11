@@ -1,8 +1,8 @@
 import { NextApiRequest } from 'next';
 import jwt from 'jsonwebtoken';
 
-import db from '../../../../db';
-import IJWTPayload from '../../../types/Auth';
+import db from '@assets/lib/db';
+import IJWTPayload from '@assets/types/Auth';
 
 export default async (req: NextApiRequest) => {
     return new Promise(async function (resolve, reject) {
@@ -23,7 +23,7 @@ export default async (req: NextApiRequest) => {
                             if (result.length > 0 && result[0]['token'] == authToken)
                                 return resolve(decode);
                             else
-                                return reject(new Error("Kullanıcı güvenlik belirteci doğru değil. Lütfen yeniden giriş yapınız."));
+                                return reject(new Error("Kullanıcının güvenlik belirteci doğru değil. Lütfen yeniden giriş yapınız."));
                         })
                         .catch(err => {
                             return reject(err);

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import IJWTPayload from '../../../types/Auth';
+import IJWTPayload from '@assets/types/Auth';
 
 export default async (result: IJWTPayload) => {
     return new Promise(async function (resolve, reject) {

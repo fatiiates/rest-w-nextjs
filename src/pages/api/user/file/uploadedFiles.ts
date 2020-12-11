@@ -1,88 +1,43 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import fs from 'fs';
 
-import db from '../../../../db';
-import { createErrorResponse, createSuccessResponse } from "../../../../assets/types/creators/Response";
-
-const existDirectory: any = async (user_id, uploadDir: string, cb?: (err: Error, result: string) => void) => {
-  const querySelect: any = `SELECT * FROM users WHERE id = ? LIMIT 1`;
-  try {
-    await db.query(querySelect, [user_id])
-      .then((result: Array<any>) => {
-        if (result.length > 0) {
-          let directory_id: string = result[0]['directory_id'];
-          const directoryPath = uploadDir + "/files/uploads/" + directory_id;
-          if (!fs.existsSync(directoryPath))
-            return cb(Error("Sunucu üzerinde bir yükleme yapılmamış."), null)
-          return cb(null, directoryPath);
-        }
-        else
-          return cb(Error("Veritabanında ilgili kullanıcı mevcut değil."), null);
-      })
-    .catch(err => {
-      cb(err, null);
-    });
-    
-  } catch (error) {
-    return cb(Error("Bilinmeyen bir sorun oluştu."), null);
-  }
-};
-
-const getUploadedFiles = async (req, res) => {
-  return new Promise(async function (resolve, reject) {
-    await existDirectory(req.body.data.id, "./src/assets", function (err: Error, result: string) {
-      if (err)
-        reject(err);
-      else {
-        var allFiles: Array<string> = fs.readdirSync(result);
-        var object = { files: allFiles, userDirectoryPath: result.split('/').pop() }
-        resolve(object);
-      }
-    });
-  });
-}
-
+import { createErrorResponse, createSuccessResponse } from "@assets/types/creators/Response";
+import GetUploadedFiles from '@assets/lib/user/file/getUploadedFiles';
 
 const Controller = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
 
-  if (req.method != "POST") {
-    const send = createErrorResponse();
-    send.err_code = 405;
-    send.description = "Yalnızca POST istekleri kabul edilmektedir.";
-    return res.status(send.err_code).send(send);
-  }
-  else if (typeof req.body.data.id == 'undefined') {
-    const send = createErrorResponse();
-    send.err_code = 404;
-    send.description = "Kullanıcının eşsiz niteliği bulunamadı.";
-    return res.status(send.err_code).send(send);
-  }
-  else
-    await getUploadedFiles(req, res)
-      .then((result: object) => {
-        const send = createSuccessResponse();
-        send.result = result;
-        return res.status(200).send(send);
-      })
-      .catch(err => {
-        const send = createErrorResponse();
-        send.err_code = 500;
-        send.description = err.message;
+    if (req.method != "POST") {
+        const send = createErrorResponse(405, "Yalnızca POST istekleri kabul edilmektedir.");
         return res.status(send.err_code).send(send);
-      });
+    }
+    else if (typeof req.body.data == 'undefined') {
+        const send = createErrorResponse(404, "Kullanıcının herhangi bir verisi bulunamadı.");
+        return res.status(send.err_code).send(send);
+    }
+    else if (typeof req.body.data.id == 'undefined') {
+        const send = createErrorResponse(404, "Kullanıcının eşsiz niteliği bulunamadı.");
+        return res.status(send.err_code).send(send);
+    }
+    else
+        await GetUploadedFiles(req)
+            .then((result: object) => {
+                const send = createSuccessResponse(result);
+                return res.status(200).send(send);
+            })
+            .catch(err => {
+                const send = createErrorResponse(500, err.message);
+                return res.status(send.err_code).send(send);
+            });
 
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
-  try {
-    await Controller(req, res);
-  }
-  catch (e) {
-    const send = createErrorResponse();
-    send.err_code = 500;
-    send.description = e.message;
-    return res.status(send.err_code).send(send);
-  }
+    try {
+        await Controller(req, res);
+    }
+    catch (e) {
+        const send = createErrorResponse(500, e.message);
+        return res.status(send.err_code).send(send);
+    }
 
 };

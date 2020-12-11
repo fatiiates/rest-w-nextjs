@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { md5 } from 'md5';
 
-import db from '../../../../db';
+import db from '@assets/lib/db';
 
 export default async (req) => {
     return new Promise(async function (resolve, reject) {

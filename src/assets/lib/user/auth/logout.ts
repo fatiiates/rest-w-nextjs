@@ -1,6 +1,6 @@
-import db from '../../../../db'
-import IJWTPayload from '../../../types/Auth';
-import isAuth from './isAuth';
+import db from '@assets/lib/db';
+import IJWTPayload from '@assets/types/Auth';
+import isAuth from '@assets/lib/user/auth/isAuth';
 
 export default async (req) => {
     return new Promise(async function (resolve, reject) {

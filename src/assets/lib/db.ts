@@ -26,7 +26,7 @@ class Database {
             this.conn.end(err => {
                 if (err)
                     return reject(err);
-                resolve();
+                resolve(true);
             });
         });
     };

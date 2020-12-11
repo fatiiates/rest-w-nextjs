@@ -1,8 +1,8 @@
 import md5 from 'md5';
 import { NextApiRequest } from 'next';
 
-import db from '../../../../db';
-import generateToken from './_generateToken';
+import db from '@assets/lib/db';
+import generateToken from '@assets/lib/user/auth/_generateToken';
 
 export default async (req: NextApiRequest) => {
     return new Promise(async function (resolve, reject) {

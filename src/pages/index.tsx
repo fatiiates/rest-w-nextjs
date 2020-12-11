@@ -3,13 +3,13 @@ import React from 'react'
 import Box from '@material-ui/core/Box';
 
 
-const Default = (): React.ReactNode => {
+const Default = () => {
 
-  return (
-    <Box>
-a   
-    </Box>
-  );
+      return (
+            <Box>
+                  Test
+            </Box>
+      );
 
 }
 

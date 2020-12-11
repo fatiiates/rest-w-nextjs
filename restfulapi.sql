@@ -30,12 +30,11 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `restfulapi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `restfulapi`;
 
-CREATE TABLE `filesdata` (
+CREATE TABLE `log_files` (
   `files_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `filess` text NOT NULL,
-  `files_name` varchar(250) NOT NULL,
-  `files_description` text NOT NULL,
+  `file_name` varchar(60) NOT NULL,
+  `file_status` bit(1) NOT NULL DEFAULT 0,
   `created_date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
