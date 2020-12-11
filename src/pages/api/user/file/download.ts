@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import contentDisposition from 'content-disposition';
 import fs from 'fs';
 
-import { createErrorResponse } from "../../../../assets/types/generators/Response";
+import { createErrorResponse } from "../../../../assets/types/creators/Response";
 
 const FileDownload = (req, res, cb: (err, result?) => void): any => {
 

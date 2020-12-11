@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import fs from 'fs';
 
 import db from '../../../../db';
-import { createErrorResponse, createSuccessResponse } from "../../../../assets/types/generators/Response";
+import { createErrorResponse, createSuccessResponse } from "../../../../assets/types/creators/Response";
 
 const existDirectory: any = async (user_id, uploadDir: string, cb?: (err: Error, result: string) => void) => {
   const querySelect: any = `SELECT * FROM users WHERE id = ? LIMIT 1`;

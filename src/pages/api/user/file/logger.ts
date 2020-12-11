@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createErrorResponse, createSuccessResponse } from '../../../assets/types/generators/Response';
-import db from '../../../db';
+import { createErrorResponse, createSuccessResponse } from '../../../../assets/types/creators/Response';
+import db from '../../../../db';
 
 const Logger = async (req, res) => {
     return new Promise(async function (resolve, reject) {

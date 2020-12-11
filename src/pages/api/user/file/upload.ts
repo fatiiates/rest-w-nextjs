@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 
 import db from '../../../../db';
-import { createErrorResponse, createSuccessResponse } from '../../../../assets/types/generators/Response';
+import { createErrorResponse, createSuccessResponse } from '../../../../assets/types/creators/Response';
 
 // Body-parser devre dışı bırakılıyor.
 export const config = {

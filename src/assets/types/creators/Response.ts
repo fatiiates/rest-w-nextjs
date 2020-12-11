@@ -7,10 +7,10 @@ export const createSuccessResponse = (): ISuccessResponse => {
     };
 };
 
-export const createErrorResponse = (): IErrorResponse => {
+export const createErrorResponse = (err_code = 0, description = ""): IErrorResponse => {
     return {
         ok: false,
-        err_code: 0,
-        description: ""
+        err_code: err_code,
+        description: description
     };
 };
