@@ -11,7 +11,7 @@ export default async (req: NextApiRequest) => {
                     targetFile: string
                 } = req.body.data;
 
-                const directoryPath = "./src/assets/files/uploads/" + result.directory_id + '/' + data.targetFile;
+                const directoryPath = process.env.uploads + result.directory_id + '/' + data.targetFile;
 
                 if (directoryPath == "Undefined")
                     return reject(Error("Üzgünüm, indirilebilecek bir dosya mevcut değil."));

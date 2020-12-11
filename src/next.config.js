@@ -1,3 +1,6 @@
 module.exports = {
-  distDir: '../.next',
+    distDir: '../.next',
+    env: {
+      uploads: './src/assets/files/uploads/',
+    },
 }

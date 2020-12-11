@@ -15,7 +15,7 @@ import db from '@assets/lib/db';
                     .then(async (result: Array<any>) => {
                         if (result.length > 0) {
                             let directory_id: string = result[0]['directory_id'];
-                            const directoryPath = "./src/assets/files/uploads/" + directory_id;
+                            const directoryPath = process.env.uploads + directory_id;
                             await FileUploadMiddleware(req, directoryPath)
                                 .then((result: object) => {
                                     resolve(result);
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest) => {
         await isAuth(req)
             .then(async (result: IJWTPayload) => {
                 const form = new IncomingForm();
-                const directoryPath = "./src/assets/files/uploads/" + result.directory_id;
+                const directoryPath = process.env.uploads + result.directory_id;
 
                 form.maxFileSize = 10 * 1024 * 1024; // 10mb
                 form.keepExtensions = true;

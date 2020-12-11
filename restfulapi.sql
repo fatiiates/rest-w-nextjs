@@ -24,14 +24,14 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `filesdata`
+-- Table structure for table `log_files`
 --
 
 CREATE DATABASE IF NOT EXISTS `restfulapi` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `restfulapi`;
 
 CREATE TABLE `log_files` (
-  `files_id` int(11) NOT NULL,
+  `file_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `file_name` varchar(60) NOT NULL,
   `file_status` bit(1) NOT NULL DEFAULT 0,
@@ -58,10 +58,10 @@ CREATE TABLE `users` (
 --
 
 --
--- Indexes for table `filesdata`
+-- Indexes for table `log_files`
 --
-ALTER TABLE `filesdata`
-  ADD PRIMARY KEY (`files_id`);
+ALTER TABLE `log_files`
+  ADD PRIMARY KEY (`file_id`);
 
 --
 -- Indexes for table `users`
@@ -74,10 +74,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `filesdata`
+-- AUTO_INCREMENT for table `log_files`
 --
-ALTER TABLE `filesdata`
-  MODIFY `files_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `log_files`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`

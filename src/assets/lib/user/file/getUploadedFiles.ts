@@ -9,7 +9,7 @@ export default async (req: NextApiRequest) => {
     return new Promise(async function (resolve, reject) {
         await isAuth(req)
             .then((result: IJWTPayload) => {
-                const directoryPath = "./src/assets/files/uploads/" + result.directory_id;
+                const directoryPath = process.env.uploads + result.directory_id;
                 if (!fs.existsSync(directoryPath))
                     return reject(Error("Sunucu üzerinde bir yükleme yapılmamış."))
 

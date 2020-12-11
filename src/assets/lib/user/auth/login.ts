@@ -40,7 +40,7 @@ export default async (req: NextApiRequest) => {
                         });
                 }
                 else
-                    reject(Error("Kullanıcı girişi yapılamıyor."));
+                    reject(Error("Kullanıcı girişi yapılamıyor. Bilgilerinizi kontrol edin."));
             })
             .catch(err => {
                 reject(err);
