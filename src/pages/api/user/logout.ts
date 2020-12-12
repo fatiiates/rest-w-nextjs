@@ -9,10 +9,6 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
         const send = createErrorResponse(405, "Yalnızca POST istekleri kabul edilmektedir.");
         return res.status(send.err_code).send(send);
     }
-    else if (typeof req.headers['authorization'] == "undefined" || typeof req.headers['authorization'].split(' ')[1] == undefined) {
-        const send = createErrorResponse(404, "Kullanıcının güvenlik belirteci bulunamadı.");
-        return res.status(send.err_code).send(send);
-    }
     else
         await Logout(req)
             .then((result: object) => {

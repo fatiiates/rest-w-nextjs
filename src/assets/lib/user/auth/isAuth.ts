@@ -6,6 +6,9 @@ import IJWTPayload from '@assets/types/Auth';
 
 export default async (req: NextApiRequest) => {
     return new Promise(async function (resolve, reject) {
+        if (typeof req.headers['authorization'] == "undefined" || typeof req.headers['authorization'].split(' ')[1] == undefined) 
+            return reject(new Error("Kullanıcının güvenlik belirteci bulunamadı."));
+        
         const authToken = req.headers['authorization'].split(' ')[1];
         const secretKey = process.env.NODE_ENV == "production" ? process.env.SECRET_KEY : "SECRET_KEY";
 

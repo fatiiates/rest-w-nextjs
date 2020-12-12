@@ -4,7 +4,7 @@ const config = {
     host: "localhost",
     database: "restfulapi",
     user: "root",
-    password: ""
+    password: "Root_123"
 };
 
 class Database {
