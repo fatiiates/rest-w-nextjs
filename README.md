@@ -47,7 +47,7 @@ Proje NodeJS üzerinde çalışmaktadır. NodeJs kurulu değilse aşağıdaki ad
 > NodeJS: https://nodejs.org/en/
 
 ### MySQL Veritabanı Ayarları
-1. Deponun ana dizininde bulunan 'db.ts' içerisinde 4. satırda bulunan 'mysql.createConnection' fonksiyonuna verilen JSON nesnesini kendi makinenize uyarlamanız gerekiyor. 'mysql.createConnection' fonksiyonunun aldığı parametre olarak aldığı nesne aşağıdaki şekilde güncellenmelisiniz.
+1. Deponun ./src/assets/lib dizininde bulunan 'db.ts' içerisinde 3. satırda bulunan 'config' adındaki JSON nesnesini kendi makinenize aşağıdaki şekilde uyarlamanız gerekiyor.
        
        {
            host: '[SİZİN_VERİTABANI_SUNUCUNUZ]',

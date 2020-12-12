@@ -4,7 +4,7 @@ const config = {
     host: "localhost",
     database: "restfulapi",
     user: "root",
-    password: "Root_123"
+    password: ""
 };
 
 class Database {
@@ -15,7 +15,7 @@ class Database {
     public query = (sql, args) => {
         return new Promise((resolve, reject) => {
             this.conn.query(sql, args, (err, rows) => {
-                if (err) {
+                if (err) 
                     if (err.code = "ER_ACCESS_DENIED_ERROR")
                         return reject(new Error("Veritabanı sunucusu kimliği doğrulayamadı, bağlantı başarısız."));
                     else if (err.code == "ER_SERVER_OFFLINE_MODE")
@@ -30,7 +30,6 @@ class Database {
                         return reject(new Error("Sorgu yürütme kesintiye uğradı, maksimum süre aşıldı."));
                     else
                         return reject(err);
-                }
                 else
                     resolve(rows);
             });
