@@ -12,8 +12,17 @@ export default async (req: NextApiRequest) => {
         if (typeof authToken != "undefined")
             await jwt.verify(authToken, secretKey, async function (err, decode: IJWTPayload) {
                 if (err)
-                    if(err.name == 'TokenExpiredError')
+                    if (err.name == 'TokenExpiredError')
                         return reject(new Error("Güvenlik belirteci geçersiz. İşlemlerinize devam etmek için yeniden giriş yapınız."));
+                    else if (err.name == "JsonWebTokenError")
+                        if (err.message == "jwt malformed")
+                            return reject(new Error("Güvenlik belirteci çözülemiyor, değiştirilmiş ya da hasar görmüş olabilir."));
+                        else if (err.message == "jwt signature is required")
+                            return reject(new Error("Güvenlik belirteci çözülemiyor, imza bulunamadı."));
+                        else if (err.message == "invalid signature")
+                            return reject(new Error("Güvenlik belirteci çözülemiyor, imza geçersiz."));
+                        else
+                            return reject(new Error("Güvenlik belirtecinin varsayılan özellikleri bulunamıyor, token geçersiz"));
                     else
                         return reject(err);
                 else {

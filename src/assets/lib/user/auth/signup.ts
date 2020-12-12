@@ -17,7 +17,6 @@ export default async (req) => {
                 if (result.length > 0)
                     reject(new Error("Gönderilen e-mail adresine kayıtlı bir hesap bulunuyor."));
                 else {
-                    console.log(result);
                     const queryInsert: string = `INSERT INTO users (directory_id, user_fullname, email,password) VALUES (?, ?, ?, ?)`;
 
                     await db.query(queryInsert, [uuidv4(), data.user_fullname, data.email, md5(data.password)])

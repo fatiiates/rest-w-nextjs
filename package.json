@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next src/",
     "build": "next build src/",
-    "start": "SECRET_KEY=TEST && next build src/ && next start src/"
+    "start": "next build src/ && next start src/"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.2",

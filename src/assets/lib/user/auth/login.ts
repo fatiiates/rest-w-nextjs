@@ -31,7 +31,7 @@ export default async (req: NextApiRequest) => {
                                             message: "Kullanıcı girişi başarılı."
                                         });
                                     else
-                                        reject(Error("Güvenlik belirteci güncellenemiyor."));
+                                        reject(new Error("Güvenlik belirteci güncellenemiyor."));
                                 })
                                 .catch(err => {
                                     return reject(err);
@@ -42,7 +42,7 @@ export default async (req: NextApiRequest) => {
                         });
                 }
                 else
-                    reject(Error("Kullanıcı girişi yapılamıyor. Bilgilerinizi kontrol edin."));
+                    reject(new Error("Kullanıcı girişi yapılamıyor. Bilgilerinizi kontrol edin."));
             })
             .catch(err => {
                 reject(err);

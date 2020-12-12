@@ -15,7 +15,7 @@ export default async (req) => {
                                 message: "Başarıyla çıkış yapıldı."
                             });
                         else
-                            reject(Error("Bir sorun oluştu. Çıkış yapılamıyor."));
+                            reject(new Error("Bir sorun oluştu. Çıkış yapılamıyor."));
                     })
                     .catch(err => {
                         reject(err);
