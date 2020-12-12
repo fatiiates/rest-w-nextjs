@@ -1,6 +1,6 @@
 import { ISuccessResponse, IErrorResponse } from "@assets/types/Response";
 
-export const createSuccessResponse = (result: object = {}): ISuccessResponse => {
+export const createSuccessResponse = (result = {}): ISuccessResponse => {
     return {
         ok: true,
         result: result

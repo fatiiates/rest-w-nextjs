@@ -10,7 +10,10 @@ export default async (req) => {
                 await db.query(querySelect, [null, result.id])
                     .then(async (result: any) => {
                         if (result.affectedRows > 0)
-                            resolve(result);
+                            resolve({
+                                affectedRows: result.affectedRows,
+                                message: "Başarıyla çıkış yapıldı."
+                            });
                         else
                             reject(Error("Bir sorun oluştu. Çıkış yapılamıyor."));
                     })

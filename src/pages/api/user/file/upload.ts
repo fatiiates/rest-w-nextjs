@@ -16,10 +16,6 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
 		const send = createErrorResponse(405, "Yalnızca POST istekleri kabul edilmektedir.");
 		return res.status(send.err_code).send(send);
 	}
-	else if (typeof req.query.id == 'undefined') {
-		const send = createErrorResponse(404, "Kullanıcının eşsiz niteliği bulunamadı.");
-		return res.status(send.err_code).send(send);
-	}
 	else
 		await FileUpload(req)
 			.then((result: object) => {

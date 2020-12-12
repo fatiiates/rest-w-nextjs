@@ -3,7 +3,7 @@ interface IResponse {
 };
 
 export interface ISuccessResponse extends IResponse {
-    result: object;
+    result: any;
 };
 
 export interface IErrorResponse extends IResponse {

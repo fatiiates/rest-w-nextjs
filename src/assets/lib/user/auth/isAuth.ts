@@ -13,7 +13,7 @@ export default async (req: NextApiRequest) => {
             await jwt.verify(authToken, secretKey, async function (err, decode: IJWTPayload) {
                 if (err)
                     if(err.name == 'TokenExpiredError')
-                        return reject(new Error("Güvenlik belirteci geçersiz. Lütfen yeniden giriş yapınız."));
+                        return reject(new Error("Güvenlik belirteci geçersiz. İşlemlerinize devam etmek için yeniden giriş yapınız."));
                     else
                         return reject(err);
                 else {
@@ -23,7 +23,7 @@ export default async (req: NextApiRequest) => {
                             if (result.length > 0 && result[0]['token'] == authToken)
                                 return resolve(decode);
                             else
-                                return reject(new Error("Kullanıcının güvenlik belirteci doğru değil. Lütfen yeniden giriş yapınız."));
+                                return reject(new Error("Kullanıcının güvenlik belirteci doğru değil. İşlemlerinize devam etmek için yeniden giriş yapınız."));
                         })
                         .catch(err => {
                             return reject(err);

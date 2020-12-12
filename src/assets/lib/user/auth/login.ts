@@ -26,7 +26,9 @@ export default async (req: NextApiRequest) => {
                                 .then(async (updateResult: any) => {
                                     if (updateResult.affectedRows > 0)
                                         resolve({
-                                            token
+                                            token,
+                                            user_fullname: result[0].user_fullname,
+                                            message: "Kullanıcı girişi başarılı."
                                         });
                                     else
                                         reject(Error("Güvenlik belirteci güncellenemiyor."));

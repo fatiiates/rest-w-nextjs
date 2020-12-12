@@ -1,14 +1,14 @@
-import mysql from 'mysql';
+import mysql, { Connection } from 'mysql';
 
 const config = {
     host: "localhost",
     database: "restfulapi",
     user: "root",
-    password: ""
+    password: "Root_123"
 };
 
 class Database {
-    conn: any;
+    conn: Connection;
     constructor(config) {
         this.conn = mysql.createConnection(config);
     }
@@ -21,7 +21,7 @@ class Database {
             });
         });
     };
-    public close() {
+    public close = () => {
         return new Promise((resolve, reject) => {
             this.conn.end(err => {
                 if (err)

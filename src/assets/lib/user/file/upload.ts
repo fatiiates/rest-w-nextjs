@@ -6,39 +6,6 @@ import IJWTPayload from '@assets/types/Auth';
 import isAuth from '@assets/lib/user/auth/isAuth';
 import db from '@assets/lib/db';
 
-/*export default async (req) => {
-    return new Promise(async function (resolve, reject) {
-        await isAuth(req)
-            .then(async (result: IJWTPayload) => {
-                const querySelect: any = `SELECT * FROM users WHERE id = ? LIMIT 1`;
-                await db.query(querySelect, [req.query.id])
-                    .then(async (result: Array<any>) => {
-                        if (result.length > 0) {
-                            let directory_id: string = result[0]['directory_id'];
-                            const directoryPath = process.env.uploads + directory_id;
-                            await FileUploadMiddleware(req, directoryPath)
-                                .then((result: object) => {
-                                    resolve(result);
-                                })
-                                .catch(err => {
-                                    reject(err)
-                                });
-                        }
-                        else {
-                            reject(new Error("Veritabanında ilgili kullanıcı mevcut değil."));
-                        }
-                    })
-                    .catch(err => {
-                        reject(err);
-                    });
-            })
-            .catch(err => {
-                reject(err);
-            });
-
-    });
-}*/
-
 export default async (req: NextApiRequest) => {
     return new Promise(async function (resolve, reject) {
         await isAuth(req)
@@ -61,7 +28,7 @@ export default async (req: NextApiRequest) => {
                         if (!fs.existsSync(directoryPath))
                             fs.mkdirSync(directoryPath);
                         else if (fs.existsSync(directoryPath + '/' + part.filename))
-                            this._error(new Error("Dosya karşıya yüklenemedi.\nSunucuda aynı isimde bir dosya bulunuyor."));
+                            this._error(new Error("Dosya karşıya yüklenemedi. Sunucu üzerinde aynı isimde bir dosya bulunuyor."));
                         this.handlePart(part);
                     }
                 }
@@ -75,10 +42,13 @@ export default async (req: NextApiRequest) => {
                     else {
                         const querySelect: any = `INSERT INTO log_files (user_id, file_name, file_status) VALUES (?, ?, ?)`;
                         await db.query(querySelect, [result.id, files.file.name, 1])
-                            .then(result => {
-                                resolve(result);
+                            .then((result: any) => {
+                                resolve({
+                                    result: result.affectedRows,
+                                    message: "Dosya yüklemesi başarılı."
+                                });
                             }).catch(err => {
-                                reject(err);
+                                reject(new Error("Dosya yüklendi ancak günlüğe yazılamadı."));
                             });
                     }
                 });

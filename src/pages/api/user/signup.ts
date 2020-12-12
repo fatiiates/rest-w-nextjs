@@ -26,7 +26,7 @@ const Controller = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     else
         await Signup(req)
-            .then((result: object) => {
+            .then(result => {
                 const send = createSuccessResponse(result);
                 return res.status(200).send(send);
             })
