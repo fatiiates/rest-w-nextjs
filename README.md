@@ -35,3 +35,65 @@
 ├── README.md
 └── restfulapi.sql
 ```
+## GEREKSİNİMLER
+- NodeJS ^14.15.0
+- npm ^6.14.8
+
+## KURULUM
+
+### NodeJS Mevcut Değilse 
+
+Proje NodeJS üzerinde çalışmaktadır. NodeJs kurulu değilse aşağıdaki adres üzerinden indirebilirsiniz;
+> NodeJS: https://nodejs.org/en/
+
+### MySQL Veritabanı Ayarları
+1. Deponun ana dizininde bulunan 'db.ts' içerisinde 4. satırda bulunan 'mysql.createConnection' fonksiyonuna verilen JSON nesnesini kendi makinenize uyarlamanız gerekiyor. 'mysql.createConnection' fonksiyonunun aldığı parametre olarak aldığı nesne aşağıdaki şekilde güncellenmelisiniz.
+       
+       {
+           host: '[SİZİN_VERİTABANI_SUNUCUNUZ]',
+           database: '[SİZİN_VERİTABANI_ADINIZ]',
+           user: '[SİZİN_VERİTABANI_KULLANICI_ADINIZ]',
+           password: '[SİZİN_VERİTABANI_KULLANICI_ŞİFRENİZ]'
+       }
+       
+2. Veritabanı sunucunuzda 'restfulapi' adında bir veritabanı mevcutsa adını değiştirmeniz veya kaldırmanız gerekmektedir.
+3. Veritabanını kendi bilgisayarınıza kurmak için bilgisayarınızda XAMPP'i açınız.
+4. XAMMP üzerinden MySQL Admin butonuna tıklayarak PhpMyAdmin sayfasını açınız.
+5. PhpMyAdmin sayfasında sol menüden restfulapi adında yeni bir veri tabanı oluşturunuz.
+6. Açılan sayfada üst menüde çıkan IMPORT sekmesine tıklayınız.
+7. Deponun ana dizinindeki restfulapi.sql dosyasını seçiniz ve yükleyiniz.
+
+### Projeyi Çalıştırmak
+
+1. Bilgisayarınızın komut satırı arayüzünü açın.
+2. Dizin değiştirerek deponun bulunduğu dizinin içine gelin.
+3. Paketleri kurmak için öncelikle aşağıdaki komutu çalıştırın.
+
+       npm i --production
+
+4. Geliştirici modunda çalıştırmak için(Test için ürün aşamasında çalıştırmanız önerilir).  
+   Ürün aşamasında çalıştırmak için SECRET_KEY adında bir env tanımlamanız tavsiye edilir.
+   - ENV tanımlamak için;
+      - ./src/next.config.js dosyasını açın.
+      - Dosya içerisinde 'env' koleksiyonunu bulun.
+      - env koleksiyonu içerisinde SECRET_KEY özelliği atayın ve özel bir değer verin.
+      - Özellik tanımlı ise değerini değiştirebilirsiniz.
+      - Özellik değeri en az 32 karakter ve tahmin edilmesi zor bir key olmasına dikkat edin.
+   - Projeyi çalıştırmak için;   
+   
+          npm run start
+       
+            veya
+          
+          yarn dev
+       
+5. Daha sonra aşağıdaki komutu çalıştırın(Ürün aşamasındaki hali için).
+
+       npm run dev
+       
+          veya
+          
+       yarn dev
+       
+6. Projeniz http://localhost üzerinde varsayılan olarak 3000 portu üzerinde çalışmaya başlayacaktır.
+7. Eğer ki 3000 portunda çalışan başka bir uygulama mevcut ise 3001 portuna geçiş yapar.
